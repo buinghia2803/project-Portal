@@ -1,0 +1,425 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Zerobug OpenApi Demo Documentation",
+        "description": "Swagger OpenApi description",
+        "contact": {
+            "email": "vinhvv6626@co-well.com.vn"
+        },
+        "license": {
+            "name": "ZeroBlog",
+            "url": "https://www.zeroblog.net"
+        },
+        "version": "0.8.1"
+    },
+    "servers": [
+        {
+            "url": "http://zerobug.local",
+            "description": "Zerobug API Server"
+        }
+    ],
+    "paths": {
+        "/api/v1/news": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get list of news",
+                "description": "Returns list of news",
+                "operationId": "getNewsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewsResource"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Store news",
+                "description": "Returns news data",
+                "operationId": "storeNews",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreNewsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/News"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/news/{id}": {
+            "get": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get news information",
+                "description": "Returns news data",
+                "operationId": "getNewsById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "news id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/News"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Update existing news",
+                "description": "Returns updated news data",
+                "operationId": "updateNews",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "News id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateNewsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/News"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "News"
+                ],
+                "summary": "Delete existing news",
+                "description": "Deletes a record and returns no content",
+                "operationId": "deleteNews",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "News id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "StoreNewsRequest": {
+                "title": "Store News request",
+                "description": "Store News request body data",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the news",
+                        "type": "string",
+                        "example": "A nice news"
+                    },
+                    "desc": {
+                        "title": "desc",
+                        "description": "Description of the news",
+                        "type": "string",
+                        "example": "This is news' description"
+                    },
+                    "meta": {
+                        "title": "meta",
+                        "description": "Meta of the news",
+                        "type": "string",
+                        "example": "This is news' meta"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "Content of the news",
+                        "type": "string",
+                        "example": "This is news' content"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateNewsRequest": {
+                "title": "Update News request",
+                "description": "Update News request body data",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "title": "title",
+                        "description": "Title of the news",
+                        "type": "string",
+                        "example": "A nice news"
+                    },
+                    "desc": {
+                        "title": "desc",
+                        "description": "Description of the news",
+                        "type": "string",
+                        "example": "This is news' description"
+                    },
+                    "meta": {
+                        "title": "meta",
+                        "description": "Meta of the news",
+                        "type": "string",
+                        "example": "This is news' meta"
+                    },
+                    "content": {
+                        "title": "content",
+                        "description": "Content of the news",
+                        "type": "string",
+                        "example": "This is news' content"
+                    }
+                },
+                "type": "object"
+            },
+            "NewsResource": {
+                "title": "NewsResource",
+                "description": "News resource",
+                "properties": {
+                    "data": {
+                        "title": "Data",
+                        "description": "Data wrapper",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/News"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "NewsResource"
+                }
+            },
+            "News": {
+                "title": "News",
+                "description": "News model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title of the news",
+                        "type": "string",
+                        "example": "A nice article"
+                    },
+                    "desc": {
+                        "title": "Description",
+                        "description": "Description of the news",
+                        "type": "string",
+                        "example": "This is news' description"
+                    },
+                    "meta": {
+                        "title": "Meta",
+                        "description": "Meta of the news",
+                        "type": "string",
+                        "example": "This is news' meta"
+                    },
+                    "content": {
+                        "title": "Content",
+                        "description": "Content of the news",
+                        "type": "string",
+                        "example": "This is news' content"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-07-14 17:50:45"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-07-14 17:50:45"
+                    },
+                    "deleted_at": {
+                        "title": "Deleted at",
+                        "description": "Deleted at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2021-07-14 17:50:45"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "News"
+                }
+            }
+        },
+        "securitySchemes": {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "http",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://www.zerobug.local/oauth/authorize",
+                        "tokenUrl": "http://www.zerobug.local/oauth/token",
+                        "refreshUrl": "http://www.zerobug.local/token/refresh",
+                        "scopes": []
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Zerobug",
+            "description": "API Endpoints of Projects"
+        }
+    ],
+    "security": [
+        []
+    ]
+}

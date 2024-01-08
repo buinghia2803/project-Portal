@@ -1,0 +1,51 @@
+version: '3.8'
+services: 
+  web:
+        privileged: true
+        build:
+            context: ./docker
+        image: zerobug:v1
+        platform: linux/x86_64
+        container_name: zerobug_nginx
+        volumes:
+            - "../:/usr/share/nginx/zerobug"
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            - NGINX_HOST=www.zerobug.local
+        networks:
+            - zerobug_network
+  mysql:
+        image: mysql:8
+        platform: linux/x86_64
+        container_name: zerobug_mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            - MYSQL_DATABASE=zerobug
+            - MYSQL_USER=app_zerobug
+            - MYSQL_ROOT_PASSWORD=relipa@123
+            - MYSQL_PASSWORD=pw_mysql
+        ports:
+            - "3308:3306"
+        volumes:
+            - "./data/mysql:/var/lib/mysql"
+            - "./docker/mysql/log:/var/log/mysql"
+            - "./docker/mysql/conf.d:/etc/mysql/conf.d"
+        networks:
+            - zerobug_network
+  redis:
+        container_name: zerobug_redis
+        image: redis
+        platform: linux/x86_64
+        restart: always
+        command: redis-server --requirepass 0kljax7r5wgfdg6d
+        ports:
+            - '6379:6379'
+        networks:
+            - zerobug_network
+networks:
+    zerobug_network:
+        driver: bridge
+        name: zerobug_network
